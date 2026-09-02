@@ -26,6 +26,13 @@ export interface LoginUserRequest {
   email: string;
 }
 
+export interface UpdateUserRequest {
+  name: string;
+  email: string;
+  phone: string;
+  address: string;
+}
+
 export class UserService extends ApiService {
   constructor(baseUrl: string) {
     super(baseUrl);
@@ -43,5 +50,9 @@ export class UserService extends ApiService {
 
   async getUserById(id: number): Promise<UserResponse> {
     return this.get<UserResponse>(`${this.base}/${id}`);
+  }
+
+  async updateUser(id: number, request: UpdateUserRequest): Promise<UserResponse> {
+    return this.put<UserResponse>(`${this.base}/${id}`, request);
   }
 }

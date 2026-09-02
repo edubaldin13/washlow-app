@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { LoginPage, type RegisterData } from './pages/LoginPage'
 import { MachinesPage } from './pages/MachinesPage'
 import { MachineDetailPage } from './pages/MachineDetailPage'
+import { ProfilePage } from './pages/ProfilePage'
 import { Layout } from './components/Layout'
 import { ToastContainer } from './components/ToastContainer'
 import { ServiceService } from './services/ServiceService'
@@ -104,6 +105,10 @@ function App() {
     setIsAuthenticated(false)
   }
 
+  const handleUserUpdated = (updatedUser: StoredUser) => {
+    setUser(updatedUser)
+  }
+
   if (isInitializing) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-50">
@@ -135,6 +140,18 @@ function App() {
           element={
             isAuthenticated ? (
               <MachineDetailPage serviceService={serviceService} />
+            ) : (
+              <Navigate to="/" replace />
+            )
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            isAuthenticated ? (
+              <Layout user={user} onLogout={handleLogout}>
+                <ProfilePage userService={userService} user={user} onUserUpdated={handleUserUpdated} />
+              </Layout>
             ) : (
               <Navigate to="/" replace />
             )
